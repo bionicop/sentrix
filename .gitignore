@@ -88,3 +88,6 @@ mcp.json
 *.swp
 *.swo
 .cache/
+
+# Voiceover script (local only — not for repo)
+walkthrough/VOICEOVER_SCRIPT_TTS.txt
