@@ -1,0 +1,26 @@
+{
+  "name": "sentrix-walkthrough",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "record": "node record-sections.mjs",
+    "studio": "npx remotion studio",
+    "render": "npx remotion render Walkthrough out/sentrix-walkthrough.mp4 --codec=h264 --crf=18"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.445",
+    "@remotion/cli": "^4.0.445",
+    "@remotion/renderer": "^4.0.445",
+    "@remotion/transitions": "^4.0.445",
+    "playwright": "^1.59.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "^4.0.445"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}

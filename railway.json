@@ -1,0 +1,23 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "nixpacksPlan": {
+      "providers": ["go"],
+      "phases": {
+        "build": {
+          "cmds": [
+            "GOWORK=off cd ingestor/api_gateway && go mod tidy && go build -o ../../server ."
+          ]
+        }
+      }
+    }
+  },
+  "deploy": {
+    "startCommand": "./server",
+    "healthcheckPath": "/api/v1/health",
+    "healthcheckTimeout": 60,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 3
+  }
+}

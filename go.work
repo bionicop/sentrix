@@ -1,0 +1,10 @@
+go 1.25.0
+
+use (
+	./ai-core
+	./datasource
+	./ingestor/api_gateway
+	./ingestor/event_router
+	./ingestor/ingestor_core
+	./ingestor/shared
+)

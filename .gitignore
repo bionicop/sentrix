@@ -1,0 +1,90 @@
+# ── Node ──────────────────────────────────────────────────────────────────────
+node_modules/
+**/node_modules/
+
+# ── Environment files (keep *.example) ────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.production
+infra/prod/.env
+
+# ── Build outputs ─────────────────────────────────────────────────────────────
+dist/
+dist-ssr/
+ui/dist/
+ui/.vercel/
+**/dist/
+
+# ── Go binaries ───────────────────────────────────────────────────────────────
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.*
+*.coverprofile
+profile.cov
+
+# ── Walkthrough / Remotion ────────────────────────────────────────────────────
+# Rendered video output (large binary, re-renderable)
+walkthrough/out/
+
+# Source screen recording clips (89MB+ MP4s, store separately)
+walkthrough/public/clips/
+
+# Generated audio files
+walkthrough/public/audio/
+
+# Remotion screenshots & playwright artifacts
+walkthrough/public/screenshots/
+walkthrough/render.log
+walkthrough/timestamps.json
+
+# ── Playwright & browser automation ───────────────────────────────────────────
+.playwright-mcp/
+screenshots/
+Screens/
+*.png
+*.webm
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── OS & editor ───────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# ── Infra runtime artifacts ───────────────────────────────────────────────────
+infra/prod/services/
+infra/prod/_failsafe/
+infra/prod/.mode
+infra/venv/
+
+# ── Test artifacts ────────────────────────────────────────────────────────────
+test-results/
+
+# ── Nested duplicates / build artifacts ───────────────────────────────────────
+walkthrough/walkthrough/
+
+# ── Sensitive config files ────────────────────────────────────────────────────
+mcp
+.mcp.json
+mcp.json
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+*.tmp
+*.swp
+*.swo
+.cache/
