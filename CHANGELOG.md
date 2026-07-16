@@ -1,5 +1,58 @@
 # Changelog
 
+## 2026-07-16
+
+### Security Hardening
+
+- **SEC-H1 (High)** Removed hardcoded HMAC fallback secret from `auth_oauth.go` — replaced with panic so missing `JWT_SECRET` is immediately visible
+- **SEC-M1 (Medium)** PostgreSQL `sslmode` default changed from `disable` → `require` in both ingestor and datasource; override with `POSTGRES_SSLMODE=disable` for local dev
+- **SEC-M2 (Medium)** Added `Content-Security-Policy`, `X-Frame-Options`, `Referrer-Policy`, and `Permissions-Policy` response headers to all Vercel routes via `vercel.json`
+- **SEC-M3 (Medium)** Added `RequestBodyLimit(4MB)` global middleware — blocks oversized JSON payloads before they're read into memory (prevents DoS via large request bodies)
+- **SEC-M4 (Medium)** `GIN_MODE` default changed from `debug` → `release` — prevents stack trace leakage in HTTP error responses
+- **SEC-L1 (Low)** `ChangePassword` handler now enforces full password strength rules (uppercase + digit + special char) — was previously only checking minimum length
+- **SEC-L2 (Low)** `router.SetTrustedProxies` now reads `TRUSTED_PROXIES` env var — operators can pin to actual proxy CIDR blocks to prevent IP spoofing bypass of rate limiter
+
+### AI — Production-grade CVE Matching
+
+Replaced keyword-only `strings.Contains` matching in `ai-core/cve.go` with a multi-signal BM25+IDF scoring engine:
+
+- **Vendor alias expansion** — 18 vendors mapped to product families (cisco→ios/iosxe/asa/catalyst, juniper→junos/srx, fortinet→fortigate/fortios, etc.)
+- **Multi-field weighted scoring** — CVE ID ref (20), vendor exact (10), vendor token (5), product exact (8), product token (4), description tokens × IDF (2), protocol co-occurrence (3), vuln type co-occurrence (2)
+- **CVSS boost** — score multiplied by `1 + (cvss/20)` so critical CVEs rank higher for same textual match
+- **No random fallback** — removed the "return most recent CVEs" fallback that was injecting noise into Watson prompts; now returns empty when nothing scores ≥ 3
+- **Enriched RAG blocks** — CVE entries now include 120-char description snippets so Watson understands the vulnerability type, not just the ID
+
+### UI — Design System Token Standardization
+
+All `__content` wrapper gaps now use the canonical `$tok-page-content-gap` token (single source of truth):
+
+- Fixed 9 page stylesheets: `_alert-details`, `_dashboard`, `_audit-log`, `_device-groups`, `_incident-history`, `_on-call`, `_post-mortems`, `_priority-alerts`, `_topology`
+- Removed old `--page-*` CSS custom properties from `index.scss` — `--sentrix-*` is now the only token system
+- Fixed topology page double-padding (was stacking `padding: $spacing-06` inside `.cds--content`'s global padding)
+
+### UI — Alert Details AI Loading State
+
+`AlertDetailsPage` now has three distinct states for the AI Explanation card:
+
+- **Analyzing** (`isReanalyzing=true`) — `InlineLoading` spinner in header + pulsing `SkeletonText` for all 4 sections (Summary / Root Cause / Business Impact / Recommended Actions)
+- **Pending** (no analysis yet) — Watson icon + "No AI analysis yet" empty state with "Click Re-analyze" hint
+- **Ready** — existing layout unchanged
+
+### UI — `useThemeDetection` Hook
+
+Eliminated 16-line duplicate `detectTheme` `useEffect` + `useState` blocks from all 4 dashboard views (`NetworkOpsView`, `SeniorEngineerView`, `NetworkAdminView`, `SysAdminView`) — each now calls `useThemeDetection()` from the shared hooks barrel.
+
+### UI — Input Limits (ticket/comment forms)
+
+Added character limits with live Carbon `enableCounter` display:
+
+- Comment `TextArea` — 2000 chars
+- Ticket title `TextInput` — 256 chars
+- Ticket description `TextArea` — 5000 chars
+- Resolution notes `TextArea` — 2000 chars
+
+---
+
 ## Latest Updates (January 2026)
 
 ### Dashboard Enhancements
